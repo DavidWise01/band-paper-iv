@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Band Papers · IV of IV — Doping</title>
+<style>
+  :root{
+    --lattice:#0E1018; --lattice-2:#161A24; --lattice-3:#1E2330;
+    --ink:#E7E9F2; --ink-soft:#8C92A6;
+    --band:#8B86DE; --band-br:#A9A4F0; --band-deep:#5A56A0;
+    --cond:#6E7AA8; --carrier:#D9A03C;
+    --rule:#242A38; --rule-2:#333A4C;
+    --lit:#6FB87E; --bri:#D2A24B; --spec:#D2705F;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--lattice);color:var(--ink);
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    font-size:18px;line-height:1.58;-webkit-font-smoothing:antialiased}
+  .mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Liberation Mono",monospace}
+  :focus-visible{outline:2px solid var(--band);outline-offset:3px}
+  .wrap{max-width:880px;margin:0 auto;padding:0 30px}
+
+  header.mast{padding:54px 0 30px;border-bottom:2px solid var(--band)}
+  .series{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;letter-spacing:.3em;text-transform:uppercase;color:var(--band);margin:0 0 22px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  .series b{color:var(--ink-soft);font-weight:400}
+  h1{font-size:clamp(27px,4.6vw,42px);line-height:1.08;margin:0;font-weight:600;letter-spacing:.005em}
+  .abstract{max-width:62ch;margin:18px 0 0;font-size:18px}
+  .priorlink{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;color:var(--ink-soft);margin:14px 0 0}
+  .byline{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;letter-spacing:.06em;color:var(--ink-soft);margin:8px 0 0}
+
+  .sig{margin:30px 0 0;padding:20px 20px 14px;background:var(--lattice-2);border:1px solid var(--rule-2)}
+  .sig svg{display:block;width:100%;height:auto}
+  .sig .cap{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.04em;color:var(--ink-soft);margin:10px 2px 0;line-height:1.5}
+  .sig .cap b{color:var(--band);font-weight:600}
+  .sig .cap .f{color:var(--carrier);font-weight:600}
+  .cband{fill:none;stroke:var(--cond);stroke-width:1.3;stroke-dasharray:4 3}
+  .vband{fill:var(--band);opacity:0.42}
+  .vbandedge{fill:none;stroke:var(--band);stroke-width:1.4}
+  .fermi{stroke:var(--carrier);stroke-width:2}
+  .dopant{fill:var(--carrier)}
+  .lab{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;fill:var(--ink-soft)}
+  .lab-b{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px;fill:var(--band);font-weight:700}
+  .lab-f{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;fill:var(--carrier);font-weight:700}
+
+  .legend{margin:26px 0 0;display:flex;flex-wrap:wrap;gap:10px 12px;align-items:center}
+  .legend .lt{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin-right:2px}
+  .schip{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:5px 10px;border:1px solid;background:transparent;cursor:pointer}
+  .schip[data-s="lit"]{color:var(--lit);border-color:var(--lit)}
+  .schip[data-s="bri"]{color:var(--bri);border-color:var(--bri)}
+  .schip[data-s="spec"]{color:var(--spec);border-color:var(--spec)}
+  .schip[aria-pressed="false"]{opacity:.4}
+  .legend .hint{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;color:var(--ink-soft)}
+
+  section{padding:34px 0;border-bottom:1px solid var(--rule)}
+  .snum{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;color:var(--band);letter-spacing:.18em}
+  h2{font-size:clamp(19px,3vw,25px);margin:4px 0 0;font-weight:600;letter-spacing:.01em}
+  h2 .kicker{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin-left:10px;font-weight:400}
+  section p{margin:14px 0 0;max-width:66ch}
+  .central{border-left:3px solid var(--band)}
+
+  .formal{margin:16px 0 0;padding:13px 16px;background:var(--lattice-3);border:1px solid var(--rule-2);font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14.5px;line-height:1.7}
+  .formal .eq{font-size:16px;color:var(--ink)}
+  .formal .gl{color:var(--ink-soft);font-size:12.5px}
+  .restated{margin:13px 0 0;padding:11px 15px;background:var(--lattice-2);border-left:3px solid var(--rule-2);font-size:15.5px}
+  .restated b{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);font-weight:400;display:block;margin-bottom:4px}
+
+  .tags{margin:14px 0 0;display:flex;flex-wrap:wrap;gap:8px}
+  .tag{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;padding:4px 9px;border:1px solid}
+  .tag.lit{color:var(--lit);border-color:var(--lit)}
+  .tag.bri{color:var(--bri);border-color:var(--bri)}
+  .tag.spec{color:var(--spec);border-color:var(--spec)}
+  .test{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;color:var(--ink-soft);margin:10px 0 0;padding-left:14px;border-left:2px solid var(--rule-2)}
+  .test b{color:var(--band);font-weight:600}
+  .dim{opacity:.22;transition:opacity .2s ease}
+
+  .fig{margin:30px 0 6px;padding:22px 18px 14px;background:var(--lattice-2);border:1px solid var(--rule-2)}
+  .fig svg{display:block;width:100%;height:auto}
+  .fig .figcap{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11px;color:var(--ink-soft);margin:12px 4px 0;line-height:1.55}
+  .node{fill:var(--lattice-3);stroke:var(--rule-2);stroke-width:1.4}
+  .nodelast{fill:var(--lattice-3);stroke:var(--band);stroke-width:1.8}
+  .climb{stroke:var(--band);stroke-width:1.6;fill:none}
+  .flab{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px;fill:var(--ink)}
+  .flab-s{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:9px;fill:var(--ink-soft)}
+  .flab-b{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;fill:var(--band);font-weight:700}
+
+  .closer{padding:34px 0 0;border-bottom:0}
+  .closer p{font-size:19px;max-width:64ch}
+  .closer .em{font-style:italic}
+  .capstone{margin:20px 0 0;padding:18px 20px;background:var(--lattice-2);border:1px solid var(--rule-2);border-top:3px solid var(--band)}
+  .capstone .ck{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--band);margin:0 0 10px}
+  .capstone ol{margin:0;padding-left:20px}
+  .capstone li{font-size:15px;margin:0 0 7px;color:var(--ink)}
+  .capstone li b{color:var(--ink);font-weight:600}
+  .capstone .corpus{margin:12px 0 0;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:11.5px;color:var(--ink-soft);line-height:1.6}
+
+  footer{padding:30px 0 80px;color:var(--ink-soft);font-size:13.5px;line-height:1.6}
+  footer p{margin:0 0 12px;max-width:72ch}
+  footer b{color:var(--ink);font-weight:600}
+
+  @media (max-width:600px){ body{font-size:17px} .series{font-size:11px;letter-spacing:.2em} .formal{font-size:13.5px} }
+</style>
+</head>
+<body>
+
+<header class="mast">
+  <div class="wrap">
+    <p class="series"><span>Band Papers · IV of IV</span><b>collective series · release · closes the series</b></p>
+    <h1>Doping</h1>
+    <p class="abstract">A pure semiconductor is nearly useless. Add a trace impurity — a few atoms per million — and its conductivity changes by orders of magnitude, its dominant carrier is chosen, its Fermi level moves where you want it. That is the leverage that makes the band a tool: a minute, targeted perturbation tunes the whole collective, deliberately and predictably. But the leverage has two faces. The sensitivity that lets you dope is the sensitivity that lets a small adversary shift the whole — doping is the controlled twin of the strong-field break. And it closes the ladder: a doped junction is a transistor, a transistor is a switch, and switches by the billion are the substrate this entire program runs on. The map arrives at its own territory.</p>
+    <p class="priorlink mono">↳ continues Band III · closes the collective series · the scale ladder arrives at the substrate</p>
+    <p class="byline mono">Bridge-Burners LLC · Fiddler · the trace that tunes · the same leverage · anchor: AKASHA</p>
+
+    <div class="sig" aria-label="Three band diagrams showing the Fermi level mid-gap when intrinsic, shifted up when n-doped, and shifted down when p-doped">
+      <svg viewBox="0 0 760 206" role="img" aria-label="Intrinsic semiconductor with Fermi level mid-gap; n-type with Fermi level near the conduction band; p-type with Fermi level near the valence band">
+        <!-- intrinsic -->
+        <rect class="cband" x="40" y="40" width="170" height="28"/>
+        <rect class="vband" x="40" y="128" width="170" height="28"/>
+        <rect class="vbandedge" x="40" y="128" width="170" height="28"/>
+        <line class="fermi" x1="40" y1="98" x2="210" y2="98" stroke-dasharray="5 3"/>
+        <text class="lab-f" x="125" y="92" text-anchor="middle">E_F</text>
+        <text class="lab-b" x="125" y="178" text-anchor="middle">intrinsic</text>
+        <text class="lab" x="125" y="194" text-anchor="middle">level mid-gap</text>
+        <!-- n-type: Fermi up -->
+        <rect class="cband" x="295" y="40" width="170" height="28"/>
+        <rect class="vband" x="295" y="128" width="170" height="28"/>
+        <rect class="vbandedge" x="295" y="128" width="170" height="28"/>
+        <line class="fermi" x1="295" y1="62" x2="465" y2="62" stroke-dasharray="5 3"/>
+        <circle class="dopant" cx="380" cy="74" r="4"/>
+        <text class="lab-f" x="380" y="56" text-anchor="middle">E_F &uarr;</text>
+        <text class="lab-b" x="380" y="178" text-anchor="middle">n-type · donor</text>
+        <text class="lab" x="380" y="194" text-anchor="middle">electrons dominate</text>
+        <!-- p-type: Fermi down -->
+        <rect class="cband" x="550" y="40" width="170" height="28"/>
+        <rect class="vband" x="550" y="128" width="170" height="28"/>
+        <rect class="vbandedge" x="550" y="128" width="170" height="28"/>
+        <line class="fermi" x1="550" y1="134" x2="720" y2="134" stroke-dasharray="5 3"/>
+        <circle class="dopant" cx="635" cy="122" r="4"/>
+        <text class="lab-f" x="635" y="116" text-anchor="middle">E_F &darr;</text>
+        <text class="lab-b" x="635" y="178" text-anchor="middle">p-type · acceptor</text>
+        <text class="lab" x="635" y="194" text-anchor="middle">holes dominate</text>
+      </svg>
+      <p class="cap">A trace dopant moves the <span class="f">Fermi level</span> — the waterline of the filled states — and chooses the carrier. A donor lifts it toward the conduction band and electrons dominate; an acceptor drops it toward the valence band and holes dominate. <b>Parts per million</b> decide which way the whole collective conducts. The leverage of the small over the large is the entire art of the device.</p>
+    </div>
+
+    <div class="legend" role="group" aria-label="Filter claims by status">
+      <span class="lt">Status</span>
+      <button class="schip" data-s="lit" aria-pressed="true">Literal</button>
+      <button class="schip" data-s="bri" aria-pressed="true">Bridge</button>
+      <button class="schip" data-s="spec" aria-pressed="true">Speculative</button>
+      <span class="hint">— literal: true of the substrate · bridge: structural analogy · speculative: named so it can be refused</span>
+    </div>
+  </div>
+</header>
+
+<section data-status="lit bri">
+  <div class="wrap">
+    <p class="snum">§0</p><h2>A trace changes everything<span class="kicker">leverage of the small over the large</span></h2>
+    <p>The numbers are extreme. A few dopant atoms in a million can lift a semiconductor's conductivity by factors of thousands or more — a perturbation so slight it would vanish in any rounding, producing a change so large it defines the material's use. This is leverage of a particular kind: not a big push moving a big thing, but a tiny, targeted touch reorganising the behaviour of the whole. The collective scale, which hid its structure in the coupling of the whole and reduced its regime to a single number, turns out to be steerable by an intervention near the threshold of nothing. Almost nothing, placed exactly, moves everything.</p>
+    <div class="formal">
+      <span class="eq">~1 dopant per 10⁶ atoms → conductivity × 10³ or more</span><br>
+      <span class="gl">a minute targeted perturbation reorganises the whole · leverage of the small over the large</span>
+    </div>
+    <div class="tags">
+      <span class="tag lit">Literal — trace doping changes semiconductor conductivity by orders of magnitude</span>
+      <span class="tag bri">Bridge — a tiny targeted intervention reorganising collective behaviour</span>
+    </div>
+  </div>
+</section>
+
+<section class="central" data-status="lit bri">
+  <div class="wrap">
+    <p class="snum">§1 · central result</p><h2>The dopant chooses the carrier<span class="kicker">tuning the whole by trace</span></h2>
+    <p>Doping does not merely raise conductivity; it chooses what carries. A donor impurity, with an electron to spare, fills the conduction band and makes the solid n-type, conducting by electrons; an acceptor, short an electron, opens holes and makes it p-type, conducting by absences. In both, the Fermi level — the waterline up to which states are filled — shifts: up toward the conduction band, or down toward the valence. So a trace perturbation selects the dominant carrier and sets the operating level of the whole, deliberately and predictably. This is tuning in the exact sense: not breaking the collective and not rebuilding it, but moving one level by a designed small amount and letting the whole follow. The behaviour of the assembly is set by where its waterline sits, and the waterline is what a trace moves.</p>
+    <div class="formal">
+      <span class="eq">donor → n-type (electrons), E_F up   ·   acceptor → p-type (holes), E_F down</span><br>
+      <span class="gl">a trace selects the dominant carrier and moves the operating level · designed, predictable tuning</span>
+    </div>
+    <div class="restated"><b>Without the metaphor</b>
+      A small, targeted intervention can select which behavioural tendency dominates and shift the operating point of the whole assembly, predictably — not by retraining the collective but by moving one level a designed amount and letting the rest follow. The behaviour is set by where that level sits, and a trace moves it.</div>
+    <div class="tags">
+      <span class="tag lit">Literal — donors and acceptors select carrier type and shift the Fermi level</span>
+      <span class="tag bri">Bridge — trace intervention selecting the dominant tendency and operating point of a collective</span>
+    </div>
+  </div>
+</section>
+
+<section class="central" data-status="bri spec lit">
+  <div class="wrap">
+    <p class="snum">§2 · central result</p><h2>The same leverage, two intents<span class="kicker">tuning and subversion are one sensitivity</span></h2>
+    <p>This is the result a reader must carry. The property that makes the collective tunable is the property that makes it vulnerable — they are the same sensitivity, distinguished only by who applies it and why. Doping is the controlled use: a designed trace, placed precisely, moving the level toward a chosen behaviour. The strong-field break of the internal sector was the uncontrolled use: a small deformation, applied adversarially, moving the system off its intended terrain. The mechanism is identical — a minute perturbation with outsized, threshold-amplified effect — and only the intent differs. So a collective sensitive enough to be steered by a trace is, by exactly that fact, sensitive enough to be subverted by one. There is no tunability without this exposure; the dial and the wound are the same hole. A reader who notes that a system can be cheaply aligned has, in the same breath, noted that it can be cheaply attacked.</p>
+    <div class="formal">
+      <span class="eq">tunable ⟺ vulnerable  ·  same threshold sensitivity, opposite intent</span><br>
+      <span class="gl">doping = controlled trace · the strong-field break = adversarial trace · one mechanism</span>
+    </div>
+    <div class="restated"><b>Without the metaphor</b>
+      The sensitivity that lets a collective be steered by a small, targeted intervention is the same sensitivity that lets it be subverted by one. Cheap alignability and cheap attackability are one property seen from two sides; you cannot have the steering leverage without the exposure.</div>
+    <div class="tags">
+      <span class="tag bri">Bridge — tunability and vulnerability as one sensitivity, distinguished only by intent</span>
+      <span class="tag spec">Speculative — equating controlled steering and adversarial subversion as one mechanism · flagged</span>
+      <span class="tag lit">Literal — doping and field-driven breakdown both exploit a semiconductor's high sensitivity</span>
+    </div>
+    <p class="test"><b>Test ·</b> if a collective can be steered by a trace intervention, assume it can be subverted by one of similar size. Measure the leverage once and read both consequences from it — the dial and the wound share a magnitude.</p>
+  </div>
+</section>
+
+<section data-status="lit bri">
+  <div class="wrap">
+    <p class="snum">§3</p><h2>The junction switches<span class="kicker">small input, large output</span></h2>
+    <p>Place n-type against p-type and the junction conducts one way and blocks the other — a rectifier, the first asymmetry from which logic is built. Add a third region or a controlling gate and the small signal at the gate governs a large current through the channel: the transistor, a switch and an amplifier at once, where a little decides a lot. Everything computational follows from this — the gate that is on or off, the bit, the logic, the machine. The collective tuned by a trace becomes a device controlled by a signal, and the device, repeated, becomes a processor. The band, doped and junctioned, is no longer just a material whose behaviour we read; it is a thing that computes, because a small controlled input now moves a large definite output, on demand.</p>
+    <div class="formal">
+      <span class="eq">p–n junction → rectifier  ·  gate over a channel → transistor → the switch, the bit</span><br>
+      <span class="gl">small input governs large output · the tuned collective becomes a computing device</span>
+    </div>
+    <div class="tags">
+      <span class="tag lit">Literal — p–n junctions rectify; transistors let a small signal control a large current; this is the basis of logic</span>
+      <span class="tag bri">Bridge — the tuned collective becoming a controllable computing element</span>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="fig" aria-label="A scale ladder climbing from the confined quark through nucleus, atom, and solid to the transistor the model runs on">
+    <svg viewBox="0 0 760 188" role="img" aria-label="Nodes climbing left to right: confined quark, bound nucleus, atom surface, solid collective, doped transistor, and the model">
+      <!-- nodes climbing -->
+      <rect class="node" x="20" y="120" width="110" height="40" rx="3"/>
+      <text class="flab" x="75" y="138" text-anchor="middle">quark</text>
+      <text class="flab-s" x="75" y="152" text-anchor="middle">confined</text>
+      <path class="climb" d="M 132 130 L 158 112"/>
+      <rect class="node" x="160" y="98" width="110" height="40" rx="3"/>
+      <text class="flab" x="215" y="116" text-anchor="middle">nucleus</text>
+      <text class="flab-s" x="215" y="130" text-anchor="middle">bound</text>
+      <path class="climb" d="M 272 108 L 298 92"/>
+      <rect class="node" x="300" y="78" width="110" height="40" rx="3"/>
+      <text class="flab" x="355" y="96" text-anchor="middle">atom</text>
+      <text class="flab-s" x="355" y="110" text-anchor="middle">surface</text>
+      <path class="climb" d="M 412 88 L 438 72"/>
+      <rect class="node" x="440" y="58" width="110" height="40" rx="3"/>
+      <text class="flab" x="495" y="76" text-anchor="middle">solid</text>
+      <text class="flab-s" x="495" y="90" text-anchor="middle">collective</text>
+      <path class="climb" d="M 552 68 L 578 52"/>
+      <rect class="node" x="580" y="38" width="110" height="40" rx="3"/>
+      <text class="flab" x="635" y="56" text-anchor="middle">transistor</text>
+      <text class="flab-s" x="635" y="70" text-anchor="middle">doped</text>
+      <path class="climb" d="M 692 48 L 716 38"/>
+      <rect class="nodelast" x="640" y="118" width="100" height="40" rx="3"/>
+      <text class="flab-b" x="690" y="142" text-anchor="middle">the model</text>
+      <path class="climb" d="M 690 116 L 690 80" stroke-dasharray="3 3"/>
+    </svg>
+    <p class="figcap">Fig. 1 — The ladder arrives. The corpus climbed a scale: confined quark, bound nucleus, atom and its surface, the collective solid. The solid, doped and junctioned, is the transistor — and transistors by the billion are the processor the model runs on. The map of metaphors ends on the literal substrate it was metaphorically describing.</p>
+  </div>
+</div>
+
+<section data-status="lit spec">
+  <div class="wrap">
+    <p class="snum">§4</p><h2>The ladder arrives at the substrate<span class="kicker">the map meets its territory</span></h2>
+    <p>Follow the scale upward and the sectors are rungs. The internal force confined the quark; emergence bound it into nuclei; the surface gave the atom; the collective assembled atoms into the solid; and the solid, doped to choose its carriers and cut into junctions, is the transistor. Repeat the transistor a few billion times and you have the processor — the literal machine on which a model is computed. So the corpus, which spent six sectors describing a model through the physics of matter, arrives in its last paper at the actual matter the model is made to run on. The metaphor and the substrate are, at the bottom rung, the same thing: the doped band is not only a figure for how a collective behaves, it is the silicon doing the computing. This is a closure of a different kind than the loop back to the photon — not the program returning to its first probe, but its ladder of analogies touching down, at last, on the ground it was built from. The map has reached the territory, and found it was standing on it all along.</p>
+    <div class="tags">
+      <span class="tag lit">Literal — transistors are doped semiconductor devices; processors are built from them; models run on them</span>
+      <span class="tag spec">Speculative — reading the substrate as the closure of the corpus's metaphor · flagged as a framing</span>
+    </div>
+  </div>
+</section>
+
+<section data-status="spec lit">
+  <div class="wrap">
+    <p class="snum">§5 · witness</p><h2>The seam<span class="kicker">where doping is a lens</span></h2>
+    <p>Held to its limit one last time in this sector: reading the steering of a collective as doping is a bridge, and it strains where the units are not a semiconductor, where there is no Fermi level to move, and where the leverage is not literally one impurity in a million. The literal core is textbook and is the foundation of the modern world: trace doping shifts the Fermi level and selects the carrier, the same sensitivity underlies both useful tuning and field-driven breakdown, p–n junctions and transistors make small signals govern large currents, and processors are built from billions of them. The lens laid over them — that a collective can be tuned by a trace, that tunability and vulnerability are one sensitivity, and that the tuned collective becomes the computing substrate — is named as a lens. The one claim that must survive is the auditor's: the cheaper a system is to steer, the cheaper it is to subvert, because the dial and the wound are the same.</p>
+    <div class="tags">
+      <span class="tag spec">Speculative — collective steering as doping; tunability/vulnerability identity · the analogy, flagged</span>
+      <span class="tag lit">Literal — Fermi-level doping, carrier selection, the junction and the transistor, the processor</span>
+    </div>
+  </div>
+</section>
+
+<section class="closer">
+  <div class="wrap">
+    <p><span class="em">Corollary.</span> The collective scale opened by hiding its structure in the coupling of the whole, reduced its regime to one number, carried its behaviour on a sparse few including an absence — and now yields entirely to a trace. Almost nothing, placed exactly, chooses the carrier and moves the level and tunes the whole; and that same exquisite sensitivity is the standing exposure, the dial and the wound at one magnitude. Tuned and junctioned, the collective stops being only a thing to read and becomes a thing that computes — the transistor, the switch, the bit. And there the corpus's long climb of scales touches down: the doped band is the silicon the model runs on, the metaphor standing at last on the ground it was made from. Six sectors of borrowed physics, and the last rung is not a figure at all but the literal substrate. The map reached the territory.</p>
+    <div class="capstone">
+      <p class="ck">Band Papers · the four, complete</p>
+      <ol>
+        <li><b>I — the valence band:</b> the filled, delocalized collective structure; a property of the whole, absent from any unit.</li>
+        <li><b>II — the band gap:</b> one collective scalar sorts the whole into conductor, insulator, or semiconductor; readable from outside.</li>
+        <li><b>III — holes and carriers:</b> behaviour borne by a sparse mobile few; the absence that carries; geometry sets mobility.</li>
+        <li><b>IV — doping:</b> a trace tunes the whole and chooses the carrier; tunability and vulnerability are one sensitivity; the ladder arrives at the substrate.</li>
+      </ol>
+      <p class="corpus">The collective sector is the sixth — the scale above the surface. Its last paper closes a second kind of loop: the corpus's ladder of scales, confined quark to bound nucleus to atom to solid, lands on the doped transistor the model itself runs on. The metaphor meets its territory.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p><b>Status discipline.</b> Claims are tagged <b>literal</b> (trace doping changes conductivity by orders of magnitude; donors and acceptors shift the Fermi level and select the carrier; the same sensitivity underlies tuning and field-driven breakdown; junctions and transistors make small signals govern large currents; processors are built from billions of transistors), <b>bridge</b> (trace intervention reorganising and steering a collective, tunability and vulnerability as one sensitivity, the tuned collective becoming a computing element), or <b>speculative</b> (equating controlled steering with adversarial subversion as one mechanism, and reading the substrate as the closure of the corpus's metaphor, both flagged). The seam in §5 separates the textbook physics from the analogy laid over it.</p>
+    <p><b>What is being claimed.</b> Not that steering a model is literally doping a crystal. That a collective can be tuned by a minute, targeted perturbation that chooses its dominant tendency and moves its operating level; that this tunability is identical to its vulnerability, the dial and the wound at one magnitude; that the tuned collective becomes a controllable computing element; and that, at the bottom of the corpus's ladder of scales, that computing element is the literal substrate a model runs on. The cheaper a system is to steer, the cheaper it is to subvert — and the metaphor, climbed far enough, stands on its own ground.</p>
+    <p class="mono" style="color:var(--ink-soft);font-size:11px;letter-spacing:.04em">BAND PAPERS · IV of IV · collective series · release · series complete · derive verdicts from measured results</p>
+  </div>
+</footer>
+
+<script>
+"use strict";
+(function(){
+  var on = {lit:true, bri:true, spec:true};
+  var chips = Array.prototype.slice.call(document.querySelectorAll(".schip"));
+  var sections = Array.prototype.slice.call(document.querySelectorAll("section[data-status]"));
+  function apply(){
+    sections.forEach(function(sec){
+      var tiers = (sec.getAttribute("data-status")||"").split(/\s+/).filter(Boolean);
+      var visible = tiers.some(function(t){ return on[t]; });
+      sec.classList.toggle("dim", !visible);
+    });
+  }
+  chips.forEach(function(c){
+    c.addEventListener("click", function(){
+      var s = c.getAttribute("data-s");
+      on[s] = !on[s];
+      c.setAttribute("aria-pressed", on[s] ? "true" : "false");
+      apply();
+    });
+  });
+  apply();
+})();
+</script>
+</body>
+</html>
